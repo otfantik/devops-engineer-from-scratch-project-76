@@ -5,9 +5,9 @@
   tags: prepare
   pre_tasks:
     - name: Enable universe repository
-      ansible.builtin.apt_repository:
-        repo: universe
-        state: present
+      ansible.builtin.command: add-apt-repository -y universe
+      args:
+        creates: /etc/apt/sources.list.d/ubuntu-universe.list
   roles:
     - geerlingguy.pip
     - geerlingguy.docker
