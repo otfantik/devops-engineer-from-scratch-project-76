@@ -3,6 +3,11 @@
   hosts: all
   become: yes
   tags: prepare
+  pre_tasks:
+    - name: Enable universe repository
+      ansible.builtin.apt_repository:
+        repo: universe
+        state: present
   roles:
     - geerlingguy.pip
     - geerlingguy.docker
