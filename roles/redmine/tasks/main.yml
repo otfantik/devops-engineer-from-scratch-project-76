@@ -1,0 +1,61 @@
+---
+- name: Create Redmine configuration directory
+  ansible.builtin.file:
+    path: /opt/redmine
+    state: directory
+    owner: root
+    group: root
+    mode: "0755"
+  tags: [deploy, tls-challenge]
+
+- name: Create ACME challenge directory
+  ansible.builtin.file:
+    path: /opt/redmine/acme
+    state: directory
+    owner: root
+    group: root
+    mode: "0755"
+  tags: [deploy, tls-challenge]
+
+- name: Render Redmine environment file
+  ansible.builtin.template:
+    src: .env.j2
+    dest: /opt/redmine/.env
+    owner: root
+    group: root
+    mode: "0600"
+  tags: [deploy]
+
+- name: Deploy Redmine container
+  community.docker.docker_container:
+    name: redmine
+    image: "{{ redmine_image }}"
+    state: started
+    recreate: true
+    restart_policy: unless-stopped
+    env_file: /opt/redmine/.env
+    published_ports:
+      - "{{ redmine_port }}:3000"
+    volumes:
+      - redmine_files:/usr/src/redmine/files
+      - /opt/redmine/acme:/usr/src/redmine/public/.well-known/acme-challenge
+  tags: [deploy]
+
+- name: Validate ACME challenge variables
+  ansible.builtin.assert:
+    that:
+      - acme_challenge_token | length > 0
+      - acme_challenge_content | length > 0
+    fail_msg: ACME_CHALLENGE_TOKEN and ACME_CHALLENGE_CONTENT must be set.
+  no_log: true
+  tags: [tls-challenge]
+
+- name: Publish ACME HTTP challenge
+  ansible.builtin.copy:
+    content: "{{ acme_challenge_content }}"
+    dest: "/opt/redmine/acme/{{ acme_challenge_token }}"
+    owner: root
+    group: root
+    mode: "0644"
+  no_log: true
+  tags: [tls-challenge]

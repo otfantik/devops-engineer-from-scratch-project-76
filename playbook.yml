@@ -1,0 +1,22 @@
+---
+- name: Prepare infrastructure
+  hosts: all
+  become: yes
+  tags: prepare
+  roles:
+    - geerlingguy.pip
+    - geerlingguy.docker
+
+- name: Deploy application
+  hosts: webservers
+  become: yes
+  tags: deploy
+  roles:
+    - redmine
+
+- name: Setup monitoring
+  hosts: webservers
+  become: yes
+  tags: monitoring
+  roles:
+    - datadog.datadog

@@ -1,0 +1,16 @@
+---
+db_host: "{{ vault_db_host }}"
+db_name: "{{ vault_db_name }}"
+db_user: "{{ vault_db_user }}"
+db_password: "{{ vault_db_password }}"
+db_port: "{{ vault_db_port }}"
+
+datadog_api_key: "{{ vault_datadog_api_key }}"
+datadog_site: "datadoghq.eu"
+datadog_checks:
+  http_check:
+    init_config:
+    instances:
+      - name: Redmine Health Check
+        url: "http://localhost:{{ redmine_port }}/"
+        timeout: 5

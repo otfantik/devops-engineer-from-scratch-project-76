@@ -1,0 +1,9 @@
+---
+pip_install_packages:
+  - name: docker
+
+redmine_image: "redmine:6.0"
+redmine_port: 8080
+
+acme_challenge_token: "{{ lookup('ansible.builtin.env', 'ACME_CHALLENGE_TOKEN') }}"
+acme_challenge_content: "{{ lookup('ansible.builtin.env', 'ACME_CHALLENGE_CONTENT') }}"
