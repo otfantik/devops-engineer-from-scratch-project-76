@@ -2,7 +2,6 @@
 
 prepare:
 	ansible-galaxy install -r requirements.yml
-	ansible-galaxy collection install community.docker
 	ansible-playbook -i inventory.ini playbook.yml --tags prepare --ask-vault-pass
 
 deploy:
@@ -10,7 +9,6 @@ deploy:
 
 monitoring:
 	ansible-galaxy install -r requirements.yml
-	ansible-galaxy collection install community.docker
 	ansible-playbook -i inventory.ini playbook.yml --tags monitoring --ask-vault-pass
 
 tls-challenge:

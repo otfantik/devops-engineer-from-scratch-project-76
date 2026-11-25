@@ -4,6 +4,12 @@
   become: yes
   tags: prepare
   pre_tasks:
+    - name: Ensure software-properties-common is installed
+      ansible.builtin.apt:
+        name: software-properties-common
+        state: present
+        update_cache: yes
+
     - name: Enable universe repository
       ansible.builtin.command: add-apt-repository -y universe
       args:

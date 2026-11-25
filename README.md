@@ -45,15 +45,16 @@ cd devops-engineer-from-scratch-project-76
 ```
 ansible-galaxy install -r requirements.yml
 ansible-galaxy collection install community.docker
-Настройка инвентаря и переменных
 ```
+### Настройка инвентаря и переменных
+
 Отредактируйте inventory.ini, указав публичные IP-адреса ваших ВМ и имя пользователя для SSH.
 Переменные вынесены в group_vars:
 
-group_vars/all/vars.yml — общие несекретные переменные (порт, образ, пакеты).
-group_vars/webservers/vars.yml — переменные, специфичные для веб-серверов.
-Секреты хранятся в group_vars/webservers/vault.yml и зашифрованы с помощью Ansible Vault.
-Работа с секретами (Ansible Vault)
+```group_vars/all/vars.yml``` — общие несекретные переменные (порт, образ, пакеты).
+```group_vars/webservers/vars.yml``` — переменные, специфичные для веб-серверов.
+Секреты хранятся в ```group_vars/webservers/vault.yml``` и зашифрованы с помощью Ansible Vault.
+### Работа с секретами (Ansible Vault)
 
 Для просмотра или редактирования секретов используйте команды:
 
